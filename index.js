@@ -18,11 +18,13 @@ async function run(){
     await client.connect();
     const bookingCollection=client.db('MediExpress').collection('bookingCollection');
     const doctorsCollection=client.db('MediExpress').collection('doctorsCollection');
+    const adminsCollection=client.db('MediExpress').collection('adminsCollection');
+    const patientsCollection=client.db('MediExpress').collection('patientsCollection');
     const usersCollection=client.db('MediExpress').collection('users');
     //update profile starts here
     app.post('/updateprofile',async(req,res)=>{
       const userInfo=req.body;
-      console.log(userInfo);
+      
       const query={email:userInfo.email};
       const exists=await usersCollection.findOne(query);
       if(exists){
@@ -35,7 +37,7 @@ async function run(){
 
     //get profile info
     app.post('/userinfo',async(req,res)=>{
-      console.log(req.body.email);
+      
       const query={email:req.body.email};
       const data=await usersCollection.findOne(query);
       if(data){
@@ -45,9 +47,36 @@ async function run(){
     });
     //get profile info
 
+    //Posting Doctors Profile
+    app.post('/updatedoctors',async(req,res)=>{
+      const info=req.body;
+      const result=await doctorsCollection.insertOne(info);
+      return res.send({success:true,result});
+    });
+    //Posting Doctors Profile
 
-    app.get('/doctors',async(req,res)=>{
-      const query={};
+    //Posting Admin Profile
+    app.post('/updateadmins',async(req,res)=>{
+      const info=req.body;
+      const result=await adminsCollection.insertOne(info);
+      return res.send({success:true,result});
+    });
+    //Posting Admin Profile
+
+    //Posting Patient's profile
+
+    app.post('/updatepatients',async(req,res)=>{
+      const info=req.body;
+      const result=await patientsCollection.insertOne(info);
+      return res.send({success:true,result});
+    })
+
+    //Posting Patient's profile
+
+
+    app.post('/doctors',async(req,res)=>{
+      console.log(req.body.speciality,req.body.date);
+      const query={speciality:req.body.speciality};
       const cursor=doctorsCollection.find(query);
       const doctors=await cursor.toArray();
       res.send(doctors);
