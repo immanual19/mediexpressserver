@@ -105,10 +105,47 @@ async function run(){
     //posting complaints
     
     //storing past medical history
-
-
+    app.post('/pastmedicalhistory',async(req,res)=>{
+      const info=req.body;
+      const result=await pastPrescriptionCollection.insertOne(info);
+      return res.send({success:true,result});
+    })
     //storing past medical history
 
+    //fetching doctor image
+    app.post('/doctorinfo',async(req,res)=>{
+      const query={email:req.body.email};
+      const data=await doctorsCollection.findOne(query);
+      if(data){
+        return res.send({success:true,data});
+      }
+      return res.send({success:false});
+    });
+    //fetching doctor image
+
+
+    //fetching patient image
+    app.post('/patientinfo',async(req,res)=>{
+      const query={email:req.body.email};
+      const data=await patientsCollection.findOne(query);
+      if(data){
+        return res.send({success:true,data});
+      }
+      return res.send({success:false});
+    });
+    //fetching patient image
+
+    //fetching admin image
+    app.post('/admininfo',async(req,res)=>{
+      const query={email:req.body.email};
+      const data=await adminsCollection.findOne(query);
+      console.log(data);
+      if(data){
+        return res.send({success:true,data});
+      }
+      return res.send({success:false});
+    });
+    //fetching admin image
     }
     finally{
 
