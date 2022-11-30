@@ -21,6 +21,8 @@ async function run(){
     const adminsCollection=client.db('MediExpress').collection('adminsCollection');
     const patientsCollection=client.db('MediExpress').collection('patientsCollection');
     const usersCollection=client.db('MediExpress').collection('users');
+    const complaintsCollection=client.db('MediExpress').collection('complaints');
+    const pastPrescriptionCollection=client.db('MediExpress').collection('pastPrescriptionCollection');
     //update profile starts here
     app.post('/updateprofile',async(req,res)=>{
       const userInfo=req.body;
@@ -92,7 +94,20 @@ async function run(){
       return res.send({success:true, result});
     });
 
+    //posting complaints
+
+    app.post('/complaint',async(req,res)=>{
+      const complaint=req.body;
+      const result=await complaintsCollection.insertOne(complaint);
+      return res.send({success:true,result});
+    });
+
+    //posting complaints
     
+    //storing past medical history
+
+
+    //storing past medical history
 
     }
     finally{
