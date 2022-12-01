@@ -77,7 +77,7 @@ async function run(){
 
 
     app.post('/doctors',async(req,res)=>{
-      console.log(req.body.speciality,req.body.date);
+     
       const query={speciality:req.body.speciality};
       const cursor=doctorsCollection.find(query);
       const doctors=await cursor.toArray();
@@ -139,13 +139,41 @@ async function run(){
     app.post('/admininfo',async(req,res)=>{
       const query={email:req.body.email};
       const data=await adminsCollection.findOne(query);
-      console.log(data);
+     
       if(data){
         return res.send({success:true,data});
       }
       return res.send({success:false});
     });
     //fetching admin image
+
+    //adjusting available slots
+
+    app.post('/updatedata',async(req,res)=>{
+      const query={_id:req.body.doctorId};
+      const result=await doctorsCollection.findOne(query);
+      let targettedSlot;
+      let prevSlots;
+      for(let i=0;i<result.schedules.length;++i){
+        if(result.schedules[i].day==req.body.date){
+          prevSlots=result.schedules[i].slots;
+          targettedSlot=i;
+          break;
+        }
+      }
+      prevSlots=prevSlots-1;
+      result.schedules[targettedSlot].slots=String(prevSlots);
+      
+     const response=await doctorsCollection.updateOne({_id:req.body.doctorId},{
+        $set:{
+          schedules:result.schedules
+        }
+      })
+      return res.send({success:true,response})
+    });
+
+    //adjusting available slots
+
     }
     finally{
 
