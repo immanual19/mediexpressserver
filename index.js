@@ -2,7 +2,6 @@ const express = require('express');
 const cors=require('cors');
 require('dotenv').config();
 const bodyParser = require("body-parser");
-router.use(bodyParser.json());
 const { MongoClient, ServerApiVersion, MongoRuntimeError } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 8080;
