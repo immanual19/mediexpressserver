@@ -188,3 +188,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`MediExpress listening on port ${port}`)
 })
+
+module.exports = app;
