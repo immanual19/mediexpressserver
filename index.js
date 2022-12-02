@@ -183,7 +183,7 @@ async function run(){
 }
 run().catch(console.dir);
 app.get('/', (req, res) => {
-  res.send('Hello from MediExpress!')
+  res.send('Hello from MediExpress Server!')
 })
 
 app.listen(port, () => {
