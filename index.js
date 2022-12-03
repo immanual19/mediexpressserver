@@ -24,6 +24,7 @@ async function run(){
     const usersCollection=client.db('MediExpress').collection('users');
     const complaintsCollection=client.db('MediExpress').collection('complaints');
     const pastPrescriptionCollection=client.db('MediExpress').collection('pastPrescriptionCollection');
+    const contactsCollection=client.db('MediExpress').collection('contacts');
     //update profile starts here
     app.post('/updateprofile',async(req,res)=>{
       const userInfo=req.body;
@@ -175,6 +176,15 @@ async function run(){
 
     //adjusting available slots
 
+    //Posting Contact form
+    app.post('/contact',async(req,res)=>{
+      const data=await contactsCollection.insertOne(req.body);
+      if(data){
+        return res.send({success:true,data});
+      }
+      return res.send({success:false});
+    });
+    //Posting Contact form
     }
     finally{
 
