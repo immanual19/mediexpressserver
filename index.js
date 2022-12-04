@@ -25,6 +25,7 @@ async function run(){
     const complaintsCollection=client.db('MediExpress').collection('complaints');
     const pastPrescriptionCollection=client.db('MediExpress').collection('pastPrescriptionCollection');
     const contactsCollection=client.db('MediExpress').collection('contacts');
+    const videoURLCollection=client.db('MediExpress').collection('videoURL');
     //update profile starts here
     app.post('/updateprofile',async(req,res)=>{
       const userInfo=req.body;
@@ -185,6 +186,47 @@ async function run(){
       return res.send({success:false});
     });
     //Posting Contact form
+
+
+    //fetching booking infos for doctor
+    app.post('/mybookings',async(req,res)=>{
+     // console.log(req.body.id, req.body.date);
+      const query={doctorId:req.body.id,date:req.body.date};
+
+      
+      const cursor=bookingCollection.find(query);
+      const bookingData=await cursor.toArray();
+      return res.send(bookingData);
+      
+     
+    })
+
+    //fetching booking infos for doctor
+
+
+    //doctor Posting video calling url
+    app.post('/sendlink',async(req,res)=>{
+      const videoCallingInfo=req.body;
+      const query={patientId:videoCallingInfo.patientId, url:videoCallingInfo.url,activation:videoCallingInfo.activation};
+      const exists=await videoURLCollection.findOne(query);
+      if(exists){
+        return res.send({success: false, consultationInfo:exists});
+      }
+      const result=await videoURLCollection.insertOne(videoCallingInfo);
+      return res.send({success:true, result});
+    });
+    //doctor Posting video calling url
+
+    //fetching patient's video calling links
+    app.post('/joininfo',async(req,res)=>{
+      const query={patientId:req.body.patientId,date:req.body.date};
+
+      
+      const cursor=videoURLCollection.find(query);
+      const patientBookingData=await cursor.toArray();
+      return res.send(patientBookingData);
+    });
+    //fetching patient's video calling links
     }
     finally{
 
