@@ -227,6 +227,15 @@ async function run(){
       return res.send(patientBookingData);
     });
     //fetching patient's video calling links
+
+    //doctor getting join link for a specific patient
+    app.post('/getlink',async(req,res)=>{
+      const query={patientId:req.body.patientId,reason:req.body.reason};
+
+      const data=await videoURLCollection.findOne(query);
+      return res.send({success:true,data})
+    });
+    //doctor getting join link for a specific patient
     }
     finally{
 
@@ -239,7 +248,7 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`MediExpress listening on port ${port}`)
+  console.log(`MediExpress server listening on port ${port}`)
 })
 
 module.exports = app;
