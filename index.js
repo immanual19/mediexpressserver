@@ -236,6 +236,17 @@ async function run(){
       return res.send({success:true,data})
     });
     //doctor getting join link for a specific patient
+
+
+    //showing medical report to both doctor and patient upon search request
+    app.post('/showreports',async(req,res)=>{
+      const query={nid:req.body.nid,reportname:req.body.reportname};
+      const cursor=pastPrescriptionCollection.find(query);
+      const reportData=await cursor.toArray();
+      return res.send(reportData);
+    })
+     //showing medical report to both doctor and patient upon search request
+
     }
     finally{
 
