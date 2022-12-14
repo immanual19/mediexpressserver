@@ -26,6 +26,7 @@ async function run(){
     const pastPrescriptionCollection=client.db('MediExpress').collection('pastPrescriptionCollection');
     const contactsCollection=client.db('MediExpress').collection('contacts');
     const videoURLCollection=client.db('MediExpress').collection('videoURL');
+    const doctorsReviewCollection=client.db('MediExpress').collection('doctorsReview');
     //update profile starts here
     app.post('/updateprofile',async(req,res)=>{
       const userInfo=req.body;
@@ -246,6 +247,16 @@ async function run(){
       return res.send(reportData);
     })
      //showing medical report to both doctor and patient upon search request
+
+     //Giving rating to doctor
+     app.post('/ratedoctor',async(req,res)=>{
+      const info=req.body;
+      console.log(info);
+      const result=await doctorsReviewCollection.insertOne(info);
+      return res.send({success:true,result});
+     })
+     //Giving rating to doctor
+
 
     }
     finally{
