@@ -251,9 +251,16 @@ async function run(){
      //Giving rating to doctor
      app.post('/ratedoctor',async(req,res)=>{
       const info=req.body;
-      console.log(info);
-      const result=await doctorsReviewCollection.insertOne(info);
-      return res.send({success:true,result});
+      const query={_id:info.doctorId};
+      const result=await doctorsCollection.findOne(query);
+      console.log('Result is : ',result);
+      const response=await doctorsCollection.updateOne({_id:req.body.doctorId},{
+        $push:{
+          ratingInfo:{doctorId:info.doctorId,patientId:info.patientId,rating:info.rating}
+        }
+      })
+
+      return res.send({success:true,response});
      })
      //Giving rating to doctor
 
