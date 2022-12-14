@@ -264,6 +264,15 @@ async function run(){
      })
      //Giving rating to doctor
 
+     //fetching all booking from db
+     app.post('/myappointmentlist',async(req,res)=>{
+      const info=req.body;
+      const query={patientId:info.id};
+      const cursor=bookingCollection.find(query);
+      const patientBookingData=await cursor.toArray();
+      return res.send(patientBookingData);
+     })
+     //fetching all booking from db
 
     }
     finally{
